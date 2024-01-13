@@ -29,6 +29,16 @@ Usually parses the response extracting the scraped data as dicts and salso findi
                 "tags": quote.css("div.tags a.tag::text").getall(),
             }
 
+            """
+            The parse method looks for the link to the next page, builds a full absolute URL using the urljoin method and yields a new request to the next page, registering itself as callback to handle the data extraction for the next page and to keep the crawling going throught the pages
+            """
+            next_page = response.css("li.next a::attr(href)").get()
+
+            if next_page is not None:
+                next_page = response.urljoin(next_page)
+                print(next_page)
+                yield scrapy.Request(next_page, callback=self.parse)
+
 """
 must return an iterable of Requests ( you can return a list of request or write a generator function) which the Spider will begin to crawl from. Subsequent requests will be generated successively from these initial request
 """
