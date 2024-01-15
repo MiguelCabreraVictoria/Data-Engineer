@@ -35,6 +35,7 @@ class BookspiderSpider(scrapy.Spider):
     
         books_items['url']=  response.url,
         books_items['title']=  response.css('.product_main h1::text').get(),
+        books_items['upc']=  table_rows[0].css("td ::text").get(),
         books_items['product_type']= table_rows[1].css("td ::text").get(),
         books_items['price_excl_tax']= table_rows[2].css("td ::text").get(),
         books_items['price_incl_tax']= table_rows[3].css("td ::text").get(),
